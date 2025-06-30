@@ -1,7 +1,7 @@
 import { aysncHandler } from "../utils/asyncHandler.js";
 import {apiError} from "../utils/apiError.js"
 import {User} from "../models/User.model.js"
-import {uploadOnCloudinary, upluploadOnCloudinary} from "../utils/cloudinary.js"
+import {uploadOnCloudinary} from "../utils/cloudinary.js"
 import { apiResponse } from "../utils/apiResponse.js";
 
 
@@ -19,7 +19,7 @@ const registerUser= aysncHandler(async (req, res)=>{
 
 //
  const {fullname, email, username, password} = req.body
- console.log("email:", email);
+ // console.log("email:", email);
 
 
 //
@@ -29,7 +29,7 @@ const registerUser= aysncHandler(async (req, res)=>{
 
  
 //
- const existedUser= User.findOne({
+ const existedUser= await User.findOne({
     $or:[{username},{email}]
 })
 
@@ -40,7 +40,16 @@ if(existedUser){
 
 //
 const avatarLocalPath= req.files?.avatar[0]?.path;
-const coverImageLocathPath=req.files?.coverImage[0]?.path;
+// const coverImageLocathPath=req.files?.coverImage[0]?.path; // this will give error if coverimage is empty
+
+
+
+//
+let coverImageLocathPath;
+if(req.files && Array.isArray(req.file.coverImage) && req.files.coverImage.length>0){
+    coverImageLocathPath=req.files.coverImage[0].path;
+
+}
 
 //
 if (!avatarLocalPath) {
@@ -50,6 +59,8 @@ if (!avatarLocalPath) {
 //
 const avatar= await uploadOnCloudinary(avatarLocalPath)
 const coverImage= await uploadOnCloudinary(coverImageLocathPath)
+
+
 
 //
 if(!avatar){
