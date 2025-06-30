@@ -6,3 +6,6 @@ class apiResponse {
         this.success=statusCode < 400 // understand what is assoicated with which number
     }
 }
+
+
+export {apiResponse}
