@@ -2,11 +2,11 @@
 
 // promises method 
 const aysncHandler=(requestHandler)=>{
-    (req, res, next)=>{
+   return (req, res, next)=>{
         Promise.resolve(requestHandler(req, res, next)).catch((err)=>next(err))
     }
 }
-
+// as it is a higher order function so we needed to return (above)
 
 export {aysncHandler}
 

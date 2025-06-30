@@ -12,10 +12,21 @@ app.use(express.json({limit: "16kb"}))
 app.use(express.urlencoded({extended: true, limit: "16kb"})) // see chai aur code for the reason behind this
 app.use(express.static("public"))
 app.use(cookieParser())
+
+
+// routes import
+import userRouter from './routes/user.routes.js'
+
+// routes declaration
+app.use("/api/v1/users", userRouter)
+
+
+
+
 export {app}
 
 
-
+// middleware : app.use
 
 /* What is asyncHandler?
 asyncHandler is a higher-order function.
